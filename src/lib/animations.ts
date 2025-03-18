@@ -1,60 +1,29 @@
 
-import { useEffect } from 'react';
-
-// Animation utility for staggered entrance animations
+/**
+ * Applies a staggered animation to elements matching the selector
+ * @param selector CSS selector for the elements to animate
+ * @param staggerMs Milliseconds between each element's animation
+ * @param initialDelayMs Initial delay before starting animations
+ */
 export const staggeredAnimation = (
-  selector: string, 
-  delay: number = 100, 
-  initialDelay: number = 0
-) => {
-  useEffect(() => {
+  selector: string,
+  staggerMs: number = 100,
+  initialDelayMs: number = 0
+): void => {
+  // This should run in the browser, not during React rendering
+  setTimeout(() => {
     const elements = document.querySelectorAll(selector);
-    
     elements.forEach((el, index) => {
-      const htmlEl = el as HTMLElement;
+      const element = el as HTMLElement;
+      element.style.opacity = '0';
+      element.style.transform = 'translateY(10px)';
+      element.style.transition = 'opacity 0.4s ease-out, transform 0.4s ease-out';
+      element.style.animationFillMode = 'forwards';
       
-      // Initial state - hidden
-      htmlEl.style.opacity = '0';
-      htmlEl.style.transform = 'translateY(10px)';
-      htmlEl.style.transition = 'opacity 600ms ease, transform 600ms ease';
-      
-      // Animate in after delay
       setTimeout(() => {
-        htmlEl.style.opacity = '1';
-        htmlEl.style.transform = 'translateY(0)';
-      }, initialDelay + (index * delay));
+        element.style.opacity = '1';
+        element.style.transform = 'translateY(0)';
+      }, initialDelayMs + (index * staggerMs));
     });
-    
-    return () => {
-      // Cleanup
-      elements.forEach((el) => {
-        const htmlEl = el as HTMLElement;
-        htmlEl.style.opacity = '';
-        htmlEl.style.transform = '';
-        htmlEl.style.transition = '';
-      });
-    };
-  }, [selector, delay, initialDelay]);
-};
-
-// Transition options for page changes
-export const pageTransition = {
-  type: "tween",
-  ease: "anticipate",
-  duration: 0.5
-};
-
-export const pageVariants = {
-  initial: {
-    opacity: 0,
-    y: 8,
-  },
-  in: {
-    opacity: 1,
-    y: 0,
-  },
-  out: {
-    opacity: 0,
-    y: -8,
-  },
+  }, 0);
 };

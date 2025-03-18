@@ -4,7 +4,6 @@ import Navbar from '../components/Navbar';
 import Footer from '../components/Footer';
 import SearchBar from '../components/SearchBar';
 import DictionaryResult from '../components/DictionaryResult';
-import { staggeredAnimation } from '../lib/animations';
 
 // Mock data for demonstration
 const mockWords = {
@@ -56,8 +55,23 @@ const Dictionary = () => {
       setRecentSearches(JSON.parse(savedSearches));
     }
     
-    // Apply animations
-    staggeredAnimation('.search-suggestion', 50);
+    // Apply animations after component mounts
+    const applyAnimations = () => {
+      const elements = document.querySelectorAll('.search-suggestion');
+      elements.forEach((el, index) => {
+        const element = el as HTMLElement;
+        element.style.opacity = '0';
+        element.style.transform = 'translateY(10px)';
+        element.style.transition = 'opacity 0.4s ease-out, transform 0.4s ease-out';
+        
+        setTimeout(() => {
+          element.style.opacity = '1';
+          element.style.transform = 'translateY(0)';
+        }, 50 * index);
+      });
+    };
+    
+    applyAnimations();
   }, []);
   
   const handleSearch = (term: string) => {
@@ -101,7 +115,7 @@ const Dictionary = () => {
     <div className="min-h-screen flex flex-col">
       <Navbar />
       <main className="flex-grow pt-24">
-        <div className="page-container">
+        <div className="container mx-auto px-4">
           <div className="max-w-4xl mx-auto">
             <div className="text-center mb-12">
               <h1 className="text-4xl font-semibold mb-4">Arabic Dictionary</h1>
