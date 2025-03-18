@@ -3,6 +3,7 @@ import React from 'react';
 import { Volume, Award, Book, Tag, Sparkles, FileText, Repeat, Dices, Italic } from 'lucide-react';
 import { Badge } from "@/components/ui/badge";
 import { WordData } from '../services/dictionaryService';
+import { toast } from "sonner";
 
 interface DictionaryResultProps {
   wordData?: WordData | null;
@@ -32,10 +33,40 @@ const DictionaryResult: React.FC<DictionaryResultProps> = ({
   }
 
   const handlePlayPronunciation = () => {
-    // This would be implemented with the text-to-speech API
-    const utterance = new SpeechSynthesisUtterance(wordData.word);
-    utterance.lang = 'ar';
-    window.speechSynthesis.speak(utterance);
+    if (!wordData.word) return;
+    
+    try {
+      // Check if speech synthesis is available
+      if (!window.speechSynthesis) {
+        toast.error("متصفحك لا يدعم خاصية النطق");
+        return;
+      }
+      
+      // Cancel any ongoing speech
+      window.speechSynthesis.cancel();
+      
+      // Create new utterance
+      const utterance = new SpeechSynthesisUtterance(wordData.word);
+      utterance.lang = 'ar'; // Set language to Arabic
+      utterance.rate = 0.8; // Slightly slower rate for better pronunciation
+      
+      // Optional: Add event listeners for debugging
+      utterance.onstart = () => console.log('Started speaking');
+      utterance.onend = () => console.log('Finished speaking');
+      utterance.onerror = (e) => {
+        console.error('Speech error:', e);
+        toast.error("حدث خطأ أثناء النطق");
+      };
+      
+      // Speak the word
+      window.speechSynthesis.speak(utterance);
+      
+      // Visual feedback
+      toast.success("جاري نطق الكلمة");
+    } catch (error) {
+      console.error('TTS error:', error);
+      toast.error("حدث خطأ أثناء النطق");
+    }
   };
 
   const getCefrBadgeColor = (level: string) => {
@@ -70,7 +101,7 @@ const DictionaryResult: React.FC<DictionaryResultProps> = ({
         </div>
         <button 
           onClick={handlePlayPronunciation}
-          className="w-12 h-12 flex items-center justify-center rounded-full bg-primary/10 text-primary hover:bg-primary/20 transition-colors"
+          className="w-12 h-12 flex items-center justify-center rounded-full bg-primary/10 text-primary hover:bg-primary/20 transition-colors active:scale-95"
           aria-label="Play pronunciation"
         >
           <Volume className="w-5 h-5" />
