@@ -4,47 +4,11 @@ import Navbar from '../components/Navbar';
 import Footer from '../components/Footer';
 import SearchBar from '../components/SearchBar';
 import DictionaryResult from '../components/DictionaryResult';
-
-// Mock data for demonstration
-const mockWords = {
-  "مرحبا": {
-    word: "مرحبا",
-    phonetic: "/marHaban/",
-    meanings: [
-      {
-        partOfSpeech: "interjection",
-        definitions: [
-          {
-            definition: "A greeting used to welcome someone.",
-            example: "مرحبا، كيف حالك؟"
-          }
-        ]
-      }
-    ]
-  },
-  "كتاب": {
-    word: "كتاب",
-    phonetic: "/kitāb/",
-    meanings: [
-      {
-        partOfSpeech: "noun",
-        definitions: [
-          {
-            definition: "A written or printed work consisting of pages bound together.",
-            example: "أنا أقرأ كتابا عن التاريخ."
-          },
-          {
-            definition: "A main division of a literary work.",
-            example: "الكتاب الأول من الرواية."
-          }
-        ]
-      }
-    ]
-  }
-};
+import { fetchWordData, WordData, isArabicWord } from '../services/dictionaryService';
+import { toast } from "sonner";
 
 const Dictionary = () => {
-  const [searchResults, setSearchResults] = useState<any>(null);
+  const [searchResults, setSearchResults] = useState<WordData | null>(null);
   const [isLoading, setIsLoading] = useState(false);
   const [recentSearches, setRecentSearches] = useState<string[]>([]);
   
@@ -74,41 +38,33 @@ const Dictionary = () => {
     applyAnimations();
   }, []);
   
-  const handleSearch = (term: string) => {
+  const handleSearch = async (term: string) => {
+    if (!isArabicWord(term)) {
+      toast.error("يُسمح فقط بالكلمات العربية. حاول مرة أخرى!");
+      return;
+    }
+    
     setIsLoading(true);
     
-    // Simulate API call with timeout
-    setTimeout(() => {
-      // Check if the search term matches our mock data
-      if (mockWords[term as keyof typeof mockWords]) {
-        setSearchResults(mockWords[term as keyof typeof mockWords]);
-      } else {
-        // No results found - in a real app, you might show a "no results" message
-        setSearchResults({
-          word: term,
-          phonetic: "/?/",
-          meanings: [
-            {
-              partOfSpeech: "unknown",
-              definitions: [
-                {
-                  definition: "No results found for this term. Please try another search.",
-                }
-              ]
-            }
-          ]
-        });
-      }
+    try {
+      const wordData = await fetchWordData(term);
       
-      // Update recent searches
-      if (!recentSearches.includes(term)) {
-        const updatedSearches = [term, ...recentSearches].slice(0, 5);
-        setRecentSearches(updatedSearches);
-        localStorage.setItem('recentSearches', JSON.stringify(updatedSearches));
+      if (wordData) {
+        setSearchResults(wordData);
+        
+        // Update recent searches
+        if (!recentSearches.includes(term)) {
+          const updatedSearches = [term, ...recentSearches].slice(0, 5);
+          setRecentSearches(updatedSearches);
+          localStorage.setItem('recentSearches', JSON.stringify(updatedSearches));
+        }
       }
-      
+    } catch (error) {
+      console.error("Error in search:", error);
+      toast.error("حدث خطأ أثناء البحث. يرجى المحاولة مرة أخرى.");
+    } finally {
       setIsLoading(false);
-    }, 800);
+    }
   };
 
   return (
@@ -118,18 +74,18 @@ const Dictionary = () => {
         <div className="container mx-auto px-4">
           <div className="max-w-4xl mx-auto">
             <div className="text-center mb-12">
-              <h1 className="text-4xl font-semibold mb-4">Arabic Dictionary</h1>
+              <h1 className="text-4xl font-semibold mb-4">قاموس اللغة العربية الذكي</h1>
               <p className="text-lg text-foreground/70">
-                Search for Arabic words to find their meanings, pronunciations, and examples.
+                ابحث عن الكلمات العربية لمعرفة معانيها وأصولها وأمثلة استخدامها
               </p>
             </div>
             
-            <SearchBar onSearch={handleSearch} />
+            <SearchBar onSearch={handleSearch} placeholder="ابحث عن كلمة باللغة العربية..." />
             
             {/* Recent searches */}
             {recentSearches.length > 0 && !searchResults && (
               <div className="mt-6 text-center">
-                <p className="text-sm text-muted-foreground mb-2">Recent searches:</p>
+                <p className="text-sm text-muted-foreground mb-2">عمليات البحث الأخيرة:</p>
                 <div className="flex flex-wrap justify-center gap-2">
                   {recentSearches.map((term, index) => (
                     <button
@@ -146,17 +102,15 @@ const Dictionary = () => {
             
             {/* Results */}
             <DictionaryResult 
-              word={searchResults?.word}
-              phonetic={searchResults?.phonetic}
-              meanings={searchResults?.meanings}
+              wordData={searchResults}
               isLoading={isLoading}
             />
             
             {/* Empty state suggestion */}
             {!searchResults && !isLoading && (
               <div className="mt-16 text-center py-12 border-t border-border/40">
-                <p className="text-lg text-muted-foreground mb-4">
-                  Try searching for these example words:
+                <p className="text-lg text-muted-foreground mb-4 rtl">
+                  جرّب البحث عن هذه الكلمات كأمثلة:
                 </p>
                 <div className="flex flex-wrap justify-center gap-2">
                   <button
@@ -170,6 +124,12 @@ const Dictionary = () => {
                     className="px-4 py-2 bg-primary/10 rounded-lg text-primary hover:bg-primary/20 transition-colors"
                   >
                     كتاب (Book)
+                  </button>
+                  <button
+                    onClick={() => handleSearch("قمر")}
+                    className="px-4 py-2 bg-primary/10 rounded-lg text-primary hover:bg-primary/20 transition-colors"
+                  >
+                    قمر (Moon)
                   </button>
                 </div>
               </div>
