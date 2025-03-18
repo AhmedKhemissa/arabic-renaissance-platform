@@ -1,6 +1,7 @@
+
 import React, { useState, useEffect } from 'react';
 import { Link, useLocation } from 'react-router-dom';
-import { Book, Image, Mic, Volume, GraduationCap, Menu, X } from 'lucide-react';
+import { Book, GraduationCap, Layers, Info, Menu, X } from 'lucide-react';
 
 const Navbar = () => {
   const [scrolled, setScrolled] = useState(false);
@@ -25,10 +26,9 @@ const Navbar = () => {
   
   const navLinks = [
     { name: "Dictionary", path: "/dictionary", icon: <Book className="w-4 h-4" /> },
-    { name: "Image Generator", path: "/image-generator", icon: <Image className="w-4 h-4" /> },
-    { name: "Speech to Text", path: "/speech-to-text", icon: <Mic className="w-4 h-4" /> },
-    { name: "Text to Speech", path: "/text-to-speech", icon: <Volume className="w-4 h-4" /> },
     { name: "Activities", path: "/activities", icon: <GraduationCap className="w-4 h-4" /> },
+    { name: "Level Test", path: "/level-test", icon: <Layers className="w-4 h-4" /> },
+    { name: "About Us", path: "/about", icon: <Info className="w-4 h-4" /> },
   ];
 
   return (
