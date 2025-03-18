@@ -1,13 +1,11 @@
-
 import React, { useEffect, useRef } from 'react';
 import { Link } from 'react-router-dom';
-import { ArrowRight, Book, Image, Mic, VolumeUp } from 'lucide-react';
+import { ArrowRight, Book, Image, Mic, Volume } from 'lucide-react';
 
 const Hero = () => {
   const bgRef = useRef<HTMLDivElement>(null);
   const textRef = useRef<HTMLDivElement>(null);
   
-  // Subtle parallax effect on scroll
   useEffect(() => {
     const handleScroll = () => {
       if (bgRef.current && textRef.current) {
@@ -22,7 +20,6 @@ const Hero = () => {
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
   
-  // Animated cards
   const features = [
     { 
       id: 1, 
@@ -47,7 +44,7 @@ const Hero = () => {
     },
     { 
       id: 4, 
-      icon: <VolumeUp className="w-6 h-6 text-primary" />, 
+      icon: <Volume className="w-6 h-6 text-primary" />, 
       title: "Text to Speech", 
       desc: "Listen to the correct pronunciation of Arabic words and phrases.",
       link: "/text-to-speech"
@@ -56,14 +53,12 @@ const Hero = () => {
 
   return (
     <div className="relative min-h-screen overflow-hidden pt-20">
-      {/* Background shape */}
       <div 
         ref={bgRef}
         className="absolute top-0 left-0 right-0 h-[80vh] bg-gradient-to-b from-primary/5 to-transparent -z-10"
         style={{ borderRadius: '0 0 50% 50% / 20%' }}
       />
       
-      {/* Hero content */}
       <div ref={textRef} className="container mx-auto px-4 pt-16 md:pt-24 text-center">
         <h1 className="animate-fade-in text-4xl md:text-5xl lg:text-6xl font-semibold tracking-tight text-foreground">
           <span className="inline-block transform transition-all duration-500 hover:scale-105 text-primary mb-2">مرحبا</span>
@@ -93,7 +88,6 @@ const Hero = () => {
         </div>
       </div>
       
-      {/* Features section */}
       <div className="container mx-auto px-4 py-24">
         <h2 className="text-3xl font-semibold text-center mb-16">Explore Our Features</h2>
         

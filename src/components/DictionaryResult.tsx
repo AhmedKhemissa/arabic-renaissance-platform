@@ -1,6 +1,6 @@
 
 import React from 'react';
-import { VolumeUp } from 'lucide-react';
+import { Volume } from 'lucide-react';
 
 interface DictionaryResultProps {
   word?: string;
@@ -58,7 +58,7 @@ const DictionaryResult: React.FC<DictionaryResultProps> = ({
           className="w-12 h-12 flex items-center justify-center rounded-full bg-primary/10 text-primary hover:bg-primary/20 transition-colors"
           aria-label="Play pronunciation"
         >
-          <VolumeUp className="w-5 h-5" />
+          <Volume className="w-5 h-5" />
         </button>
       </div>
 
