@@ -108,7 +108,7 @@
 
 @layer utilities {
   .glass-morphism {
-    @apply bg-white/80 dark:bg-black/30 backdrop-blur-md border border-white/20 dark:border-white/10;
+    @apply bg-white/80 backdrop-blur-md border border-white/20;
   }
   
   .text-balance {
@@ -143,13 +143,4 @@
 .page-exit-active {
   opacity: 0;
   transition: opacity 300ms;
-}
-
-/* Dark mode toggle styles */
-.dark-mode-toggle {
-  @apply fixed top-4 right-4 z-50 p-2 rounded-full bg-primary/10 hover:bg-primary/20 transition-colors;
-}
-
-.dark .dark-mode-toggle {
-  @apply bg-primary/20 hover:bg-primary/30;
 }
