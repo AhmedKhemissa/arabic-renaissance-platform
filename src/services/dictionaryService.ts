@@ -77,6 +77,12 @@ export const fetchWordData = async (word: string): Promise<WordData | null> => {
     }
 
     const data = await response.json();
+    
+    // Check if we have a valid response with candidates
+    if (!data || !data.candidates || !data.candidates[0] || !data.candidates[0].content || !data.candidates[0].content.parts) {
+      throw new Error("Invalid response format from API");
+    }
+    
     const generatedText = data.candidates[0].content.parts[0].text;
     
     // Parse the response
@@ -97,6 +103,7 @@ export const fetchWordData = async (word: string): Promise<WordData | null> => {
     return wordData;
   } catch (error) {
     console.error("Error fetching word data:", error);
+    toast.dismiss();
     toast.error("حدث خطأ أثناء البحث. يرجى المحاولة مرة أخرى.");
     return null;
   }
@@ -104,6 +111,8 @@ export const fetchWordData = async (word: string): Promise<WordData | null> => {
 
 // Helper function to extract fields from the generated text
 const extractField = (text: string, fieldName: string): string => {
+  if (!text) return "غير متوفر";
+  
   const lines = text.split('\n');
   for (const line of lines) {
     if (line.includes(`${fieldName}:`)) {

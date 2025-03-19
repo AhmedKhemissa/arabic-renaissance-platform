@@ -1,5 +1,5 @@
 
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Volume, Award, Book, Tag, Sparkles, FileText, Repeat, Dices, Italic, Image } from 'lucide-react';
 import { Badge } from "@/components/ui/badge";
 import { WordData } from '../services/dictionaryService';
@@ -20,6 +20,38 @@ const DictionaryResult: React.FC<DictionaryResultProps> = ({
   const [imageUrl, setImageUrl] = useState<string | null>(null);
   const [imageError, setImageError] = useState(false);
   
+  // Fix: Use useEffect consistently
+  useEffect(() => {
+    // Reset image state when wordData changes
+    setImageUrl(null);
+    setImageError(false);
+    
+    // Only fetch image if we have word data and no error occurred
+    if (wordData && wordData.word) {
+      fetchWordImage();
+    }
+  }, [wordData]); // Only depend on wordData
+  
+  const fetchWordImage = async () => {
+    if (!wordData?.word || imageLoading) return;
+    
+    setImageLoading(true);
+    setImageError(false);
+    
+    try {
+      // Simple placeholder image URL - in a real app, this would be a call to your image generation API
+      // This is a placeholder using a public image API
+      const placeholderUrl = `https://source.unsplash.com/100x100/?${encodeURIComponent(wordData.word)}`;
+      setImageUrl(placeholderUrl);
+    } catch (error) {
+      console.error('Image fetch error:', error);
+      setImageError(true);
+      toast.error("حدث خطأ أثناء جلب الصورة");
+    } finally {
+      setImageLoading(false);
+    }
+  };
+
   if (isLoading) {
     return (
       <div className="max-w-2xl mx-auto p-8 mt-8 bg-white rounded-xl border border-border/60 shadow-subtle animate-pulse">
@@ -81,33 +113,6 @@ const DictionaryResult: React.FC<DictionaryResultProps> = ({
       toast.error("حدث خطأ أثناء النطق");
     }
   };
-
-  const fetchWordImage = async () => {
-    if (!wordData.word || imageLoading) return;
-    
-    setImageLoading(true);
-    setImageError(false);
-    
-    try {
-      // Simple placeholder image URL - in a real app, this would be a call to your image generation API
-      // This is a placeholder using a public image API
-      const placeholderUrl = `https://source.unsplash.com/100x100/?${encodeURIComponent(wordData.word)}`;
-      setImageUrl(placeholderUrl);
-    } catch (error) {
-      console.error('Image fetch error:', error);
-      setImageError(true);
-      toast.error("حدث خطأ أثناء جلب الصورة");
-    } finally {
-      setImageLoading(false);
-    }
-  };
-  
-  // Fetch image on first load
-  React.useEffect(() => {
-    if (wordData && wordData.word && !imageUrl && !imageError) {
-      fetchWordImage();
-    }
-  }, [wordData]);
 
   const getCefrBadgeColor = (level: string) => {
     const levelMap: Record<string, string> = {
