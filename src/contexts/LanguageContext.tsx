@@ -200,6 +200,18 @@ interface SpeechRecognition extends EventTarget {
   abort(): void;
 }
 
+// Fix: Add SpeechRecognition constructor interface
+interface SpeechRecognitionConstructor {
+  new(): SpeechRecognition;
+  prototype: SpeechRecognition;
+}
+
+// Update global declaration to use the constructor interface
+declare global {
+  var SpeechRecognition: SpeechRecognitionConstructor | undefined;
+  var webkitSpeechRecognition: SpeechRecognitionConstructor | undefined;
+}
+
 interface SpeechRecognitionEvent extends Event {
   readonly resultIndex: number;
   readonly results: SpeechRecognitionResultList;
