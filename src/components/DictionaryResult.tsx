@@ -4,6 +4,7 @@ import { Volume, Award, Book, Tag, Sparkles, FileText, Repeat, Dices, Italic } f
 import { Badge } from "@/components/ui/badge";
 import { WordData } from '../services/dictionaryService';
 import { toast } from "sonner";
+import { useLanguage } from '@/contexts/LanguageContext';
 
 interface DictionaryResultProps {
   wordData?: WordData | null;
@@ -14,6 +15,8 @@ const DictionaryResult: React.FC<DictionaryResultProps> = ({
   wordData,
   isLoading = false,
 }) => {
+  const { t, language } = useLanguage();
+  
   if (isLoading) {
     return (
       <div className="max-w-2xl mx-auto p-8 mt-8 bg-white rounded-xl border border-border/60 shadow-subtle animate-pulse">
@@ -90,9 +93,12 @@ const DictionaryResult: React.FC<DictionaryResultProps> = ({
     return 'bg-gray-100 text-gray-800';
   };
 
+  // Direction class for RTL/LTR
+  const rtlClass = language === 'ar' ? 'text-right' : '';
+
   return (
-    <div className="max-w-2xl mx-auto p-8 mt-8 bg-white rounded-xl border border-border/60 shadow-subtle animate-fade-in">
-      <div className="flex items-center justify-between">
+    <div className={`max-w-2xl mx-auto p-8 mt-8 bg-white rounded-xl border border-border/60 shadow-subtle animate-fade-in ${rtlClass}`}>
+      <div className={`flex items-center ${language === 'ar' ? 'flex-row-reverse' : ''} justify-between`}>
         <div>
           <h2 className="text-3xl font-semibold">{wordData.word}</h2>
           {wordData.phonetic && (
@@ -129,9 +135,9 @@ const DictionaryResult: React.FC<DictionaryResultProps> = ({
       <div className="mt-8 space-y-6">
         {/* Definition */}
         <div className="animate-slide-up">
-          <div className="flex items-center gap-2 text-lg font-medium text-primary mb-3">
+          <div className={`flex items-center gap-2 text-lg font-medium text-primary mb-3 ${language === 'ar' ? 'flex-row-reverse' : ''}`}>
             <FileText className="w-5 h-5" />
-            <h3>التعريف</h3>
+            <h3>{t('definition')}</h3>
           </div>
           <p className="text-foreground">{wordData.definition}</p>
         </div>
@@ -139,9 +145,9 @@ const DictionaryResult: React.FC<DictionaryResultProps> = ({
         {/* Root/Lemma */}
         {wordData.lemma && wordData.lemma !== "غير متوفر" && (
           <div className="animate-slide-up" style={{ animationDelay: '100ms' }}>
-            <div className="flex items-center gap-2 text-lg font-medium text-primary mb-3">
+            <div className={`flex items-center gap-2 text-lg font-medium text-primary mb-3 ${language === 'ar' ? 'flex-row-reverse' : ''}`}>
               <Sparkles className="w-5 h-5" />
-              <h3>الجذر</h3>
+              <h3>{t('root')}</h3>
             </div>
             <p className="text-foreground">{wordData.lemma}</p>
           </div>
@@ -150,11 +156,11 @@ const DictionaryResult: React.FC<DictionaryResultProps> = ({
         {/* Example */}
         {wordData.example && wordData.example !== "غير متوفر" && (
           <div className="animate-slide-up" style={{ animationDelay: '200ms' }}>
-            <div className="flex items-center gap-2 text-lg font-medium text-primary mb-3">
+            <div className={`flex items-center gap-2 text-lg font-medium text-primary mb-3 ${language === 'ar' ? 'flex-row-reverse' : ''}`}>
               <Italic className="w-5 h-5" />
-              <h3>مثال</h3>
+              <h3>{t('example')}</h3>
             </div>
-            <p className="pl-4 border-l-2 border-muted italic text-muted-foreground">
+            <p className={`pl-4 border-l-2 border-muted italic text-muted-foreground ${language === 'ar' ? 'pr-4 pl-0 border-r-2 border-l-0 text-right' : ''}`}>
               "{wordData.example}"
             </p>
           </div>
@@ -163,9 +169,9 @@ const DictionaryResult: React.FC<DictionaryResultProps> = ({
         {/* Synonyms */}
         {wordData.synonyms && wordData.synonyms !== "غير متوفر" && (
           <div className="animate-slide-up" style={{ animationDelay: '300ms' }}>
-            <div className="flex items-center gap-2 text-lg font-medium text-primary mb-3">
+            <div className={`flex items-center gap-2 text-lg font-medium text-primary mb-3 ${language === 'ar' ? 'flex-row-reverse' : ''}`}>
               <Repeat className="w-5 h-5" />
-              <h3>المرادفات</h3>
+              <h3>{t('synonyms')}</h3>
             </div>
             <div className="flex flex-wrap gap-2">
               {wordData.synonyms.split('،').map((synonym, index) => (
@@ -184,9 +190,9 @@ const DictionaryResult: React.FC<DictionaryResultProps> = ({
         {/* Antonyms */}
         {wordData.antonyms && wordData.antonyms !== "غير متوفر" && (
           <div className="animate-slide-up" style={{ animationDelay: '400ms' }}>
-            <div className="flex items-center gap-2 text-lg font-medium text-primary mb-3">
+            <div className={`flex items-center gap-2 text-lg font-medium text-primary mb-3 ${language === 'ar' ? 'flex-row-reverse' : ''}`}>
               <Dices className="w-5 h-5" />
-              <h3>الأضداد</h3>
+              <h3>{t('antonyms')}</h3>
             </div>
             <div className="flex flex-wrap gap-2">
               {wordData.antonyms.split('،').map((antonym, index) => (
