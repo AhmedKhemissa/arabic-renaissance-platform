@@ -1,3 +1,4 @@
+
 import React, { useState, useEffect } from 'react';
 import { Volume, Award, Book, Tag, Sparkles, FileText, Repeat, Dices, Italic, Image } from 'lucide-react';
 import { Badge } from "@/components/ui/badge";
@@ -131,7 +132,7 @@ const DictionaryResult: React.FC<DictionaryResultProps> = ({
       <div className={`flex items-center ${language === 'ar' ? 'flex-row-reverse' : ''} justify-between`}>
         <div className="flex items-center gap-4">
           {imageUrl && (
-            <div className="w-16 h-16 rounded-lg overflow-hidden border-2 border-primary/20 flex-shrink-0">
+            <div className="w-32 h-32 rounded-lg overflow-hidden border-2 border-primary/20 flex-shrink-0">
               <img 
                 src={imageUrl} 
                 alt={wordData.word} 
@@ -141,11 +142,11 @@ const DictionaryResult: React.FC<DictionaryResultProps> = ({
             </div>
           )}
           {imageLoading && (
-            <div className="w-16 h-16 rounded-lg overflow-hidden border-2 border-primary/20 bg-muted animate-pulse flex-shrink-0"></div>
+            <div className="w-32 h-32 rounded-lg overflow-hidden border-2 border-primary/20 bg-muted animate-pulse flex-shrink-0"></div>
           )}
           {imageError && (
-            <div className="w-16 h-16 rounded-lg overflow-hidden border-2 border-primary/20 bg-muted flex items-center justify-center flex-shrink-0">
-              <Image className="w-6 h-6 text-muted-foreground" />
+            <div className="w-32 h-32 rounded-lg overflow-hidden border-2 border-primary/20 bg-muted flex items-center justify-center flex-shrink-0">
+              <Image className="w-8 h-8 text-muted-foreground" />
             </div>
           )}
           

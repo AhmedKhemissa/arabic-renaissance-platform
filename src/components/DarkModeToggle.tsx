@@ -21,7 +21,7 @@ const DarkModeToggle: React.FC = () => {
       pressed={isDarkMode}
       onPressedChange={toggleTheme}
       aria-label="Toggle dark mode"
-      className="fixed top-4 right-4 z-50 p-2 rounded-full bg-primary/10 hover:bg-primary/20 transition-colors dark:bg-primary/20 dark:hover:bg-primary/30"
+      className="fixed top-4 right-14 z-50 p-2 rounded-full bg-primary/10 hover:bg-primary/20 transition-colors dark:bg-primary/20 dark:hover:bg-primary/30"
     >
       {isDarkMode ? <Sun className="h-5 w-5" /> : <Moon className="h-5 w-5" />}
     </Toggle>
