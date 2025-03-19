@@ -1,6 +1,6 @@
 
-import React from 'react';
-import { Volume, Award, Book, Tag, Sparkles, FileText, Repeat, Dices, Italic } from 'lucide-react';
+import React, { useState } from 'react';
+import { Volume, Award, Book, Tag, Sparkles, FileText, Repeat, Dices, Italic, Image } from 'lucide-react';
 import { Badge } from "@/components/ui/badge";
 import { WordData } from '../services/dictionaryService';
 import { toast } from "sonner";
@@ -16,6 +16,9 @@ const DictionaryResult: React.FC<DictionaryResultProps> = ({
   isLoading = false,
 }) => {
   const { t, language } = useLanguage();
+  const [imageLoading, setImageLoading] = useState(false);
+  const [imageUrl, setImageUrl] = useState<string | null>(null);
+  const [imageError, setImageError] = useState(false);
   
   if (isLoading) {
     return (
@@ -39,30 +42,37 @@ const DictionaryResult: React.FC<DictionaryResultProps> = ({
     if (!wordData.word) return;
     
     try {
-      // Check if speech synthesis is available
-      if (!window.speechSynthesis) {
-        toast.error("متصفحك لا يدعم خاصية النطق");
-        return;
+      // Create and configure audio object
+      const msg = new SpeechSynthesisUtterance();
+      msg.text = wordData.word;
+      msg.lang = 'ar-SA'; // Arabic (Saudi Arabia)
+      msg.rate = 0.8; // Slightly slower for clarity
+      msg.pitch = 1;
+      msg.volume = 1;
+      
+      // Get available voices and try to find an Arabic one
+      const voices = window.speechSynthesis.getVoices();
+      const arabicVoice = voices.find(voice => 
+        voice.lang.includes('ar') || voice.name.includes('Arabic')
+      );
+      
+      if (arabicVoice) {
+        msg.voice = arabicVoice;
       }
       
-      // Cancel any ongoing speech
-      window.speechSynthesis.cancel();
-      
-      // Create new utterance
-      const utterance = new SpeechSynthesisUtterance(wordData.word);
-      utterance.lang = 'ar'; // Set language to Arabic
-      utterance.rate = 0.8; // Slightly slower rate for better pronunciation
-      
-      // Optional: Add event listeners for debugging
-      utterance.onstart = () => console.log('Started speaking');
-      utterance.onend = () => console.log('Finished speaking');
-      utterance.onerror = (e) => {
+      // Add event handlers
+      msg.onstart = () => console.log('Started speaking');
+      msg.onend = () => console.log('Finished speaking');
+      msg.onerror = (e) => {
         console.error('Speech error:', e);
         toast.error("حدث خطأ أثناء النطق");
       };
       
+      // Cancel any ongoing speech
+      window.speechSynthesis.cancel();
+      
       // Speak the word
-      window.speechSynthesis.speak(utterance);
+      window.speechSynthesis.speak(msg);
       
       // Visual feedback
       toast.success("جاري نطق الكلمة");
@@ -71,6 +81,33 @@ const DictionaryResult: React.FC<DictionaryResultProps> = ({
       toast.error("حدث خطأ أثناء النطق");
     }
   };
+
+  const fetchWordImage = async () => {
+    if (!wordData.word || imageLoading) return;
+    
+    setImageLoading(true);
+    setImageError(false);
+    
+    try {
+      // Simple placeholder image URL - in a real app, this would be a call to your image generation API
+      // This is a placeholder using a public image API
+      const placeholderUrl = `https://source.unsplash.com/100x100/?${encodeURIComponent(wordData.word)}`;
+      setImageUrl(placeholderUrl);
+    } catch (error) {
+      console.error('Image fetch error:', error);
+      setImageError(true);
+      toast.error("حدث خطأ أثناء جلب الصورة");
+    } finally {
+      setImageLoading(false);
+    }
+  };
+  
+  // Fetch image on first load
+  React.useEffect(() => {
+    if (wordData && wordData.word && !imageUrl && !imageError) {
+      fetchWordImage();
+    }
+  }, [wordData]);
 
   const getCefrBadgeColor = (level: string) => {
     const levelMap: Record<string, string> = {
@@ -99,11 +136,33 @@ const DictionaryResult: React.FC<DictionaryResultProps> = ({
   return (
     <div className={`max-w-2xl mx-auto p-8 mt-8 bg-white rounded-xl border border-border/60 shadow-subtle animate-fade-in ${rtlClass}`}>
       <div className={`flex items-center ${language === 'ar' ? 'flex-row-reverse' : ''} justify-between`}>
-        <div>
-          <h2 className="text-3xl font-semibold">{wordData.word}</h2>
-          {wordData.phonetic && (
-            <p className="text-muted-foreground mt-1">{wordData.phonetic}</p>
+        <div className="flex items-center gap-4">
+          {/* Image display */}
+          {imageUrl && (
+            <div className="w-16 h-16 rounded-full overflow-hidden border-2 border-primary/20 flex-shrink-0">
+              <img 
+                src={imageUrl} 
+                alt={wordData.word} 
+                className="w-full h-full object-cover"
+                onError={() => setImageError(true)}
+              />
+            </div>
           )}
+          {imageLoading && (
+            <div className="w-16 h-16 rounded-full overflow-hidden border-2 border-primary/20 bg-muted animate-pulse flex-shrink-0"></div>
+          )}
+          {imageError && (
+            <div className="w-16 h-16 rounded-full overflow-hidden border-2 border-primary/20 bg-muted flex items-center justify-center flex-shrink-0">
+              <Image className="w-6 h-6 text-muted-foreground" />
+            </div>
+          )}
+          
+          <div>
+            <h2 className="text-3xl font-semibold">{wordData.word}</h2>
+            {wordData.phonetic && (
+              <p className="text-muted-foreground mt-1">{wordData.phonetic}</p>
+            )}
+          </div>
         </div>
         <button 
           onClick={handlePlayPronunciation}

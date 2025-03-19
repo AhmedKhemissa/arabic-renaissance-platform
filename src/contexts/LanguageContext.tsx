@@ -29,7 +29,8 @@ const translations: Record<Language, Record<string, string>> = {
     'mission': 'Our Mission',
     'approach': 'Our Approach',
     'team': 'Our Team',
-    'activities': 'Arabic Learning Activities',
+    // Activities page
+    'activitiesPage': 'Arabic Learning Activities',
     'activitiesSubtitle': 'Enhance your Arabic language skills with our interactive activities',
     'vocabulary': 'Vocabulary Practice',
     'vocabularyDesc': 'Master essential Arabic vocabulary through interactive exercises',
@@ -38,13 +39,15 @@ const translations: Record<Language, Record<string, string>> = {
     'reading': 'Reading Comprehension',
     'readingDesc': 'Improve your reading skills with short Arabic texts',
     'startActivity': 'Start Activity',
-    'levelTest': 'Arabic Level Test',
+    // Level test
+    'levelTestPage': 'Arabic Level Test',
     'levelTestSubtitle': 'Discover your current Arabic proficiency level with our comprehensive assessment',
     'aboutTest': 'About the Test',
     'testDesc': 'Our Arabic level assessment will evaluate your skills in reading, writing, vocabulary, and grammar. The test takes approximately 20-30 minutes to complete.',
     'whatToExpect': 'What to Expect:',
     'startAssessment': 'Start Assessment',
     'resultsImmediate': 'You\'ll receive your results immediately after completion',
+    // Not found
     'notFound': 'Page Not Found',
     'notFoundDesc': 'The page you are looking for doesn\'t exist or has been moved.',
     'backToHome': 'Back to Home',
@@ -54,11 +57,16 @@ const translations: Record<Language, Record<string, string>> = {
     'example': 'Example',
     'synonyms': 'Synonyms',
     'antonyms': 'Antonyms',
+    'search': 'Search',
     // Language
     'language': 'Language',
     'english': 'English',
     'french': 'French',
     'arabic': 'Arabic',
+    // Speech recognition
+    'listening': 'Listening... Speak now',
+    'speech_not_supported': 'Speech recognition is not supported in your browser',
+    'speech_error': 'Error recognizing speech. Please try again',
   },
   fr: {
     // Navbar
@@ -73,7 +81,8 @@ const translations: Record<Language, Record<string, string>> = {
     'mission': 'Notre Mission',
     'approach': 'Notre Approche',
     'team': 'Notre Équipe',
-    'activities': 'Activités d\'apprentissage de l\'arabe',
+    // Activities page
+    'activitiesPage': 'Activités d\'apprentissage de l\'arabe',
     'activitiesSubtitle': 'Améliorez vos compétences en langue arabe avec nos activités interactives',
     'vocabulary': 'Pratique du vocabulaire',
     'vocabularyDesc': 'Maîtrisez le vocabulaire arabe essentiel grâce à des exercices interactifs',
@@ -82,13 +91,15 @@ const translations: Record<Language, Record<string, string>> = {
     'reading': 'Compréhension de lecture',
     'readingDesc': 'Améliorez vos compétences en lecture avec de courts textes arabes',
     'startActivity': 'Commencer l\'activité',
-    'levelTest': 'Test de niveau d\'arabe',
+    // Level test
+    'levelTestPage': 'Test de niveau d\'arabe',
     'levelTestSubtitle': 'Découvrez votre niveau de compétence actuel en arabe avec notre évaluation complète',
     'aboutTest': 'À propos du test',
     'testDesc': 'Notre évaluation du niveau d\'arabe évaluera vos compétences en lecture, écriture, vocabulaire et grammaire. Le test prend environ 20-30 minutes.',
     'whatToExpect': 'À quoi s\'attendre:',
     'startAssessment': 'Commencer l\'évaluation',
     'resultsImmediate': 'Vous recevrez vos résultats immédiatement après avoir terminé',
+    // Not found
     'notFound': 'Page non trouvée',
     'notFoundDesc': 'La page que vous recherchez n\'existe pas ou a été déplacée.',
     'backToHome': 'Retour à l\'accueil',
@@ -98,11 +109,16 @@ const translations: Record<Language, Record<string, string>> = {
     'example': 'Exemple',
     'synonyms': 'Synonymes',
     'antonyms': 'Antonymes',
+    'search': 'Rechercher',
     // Language
     'language': 'Langue',
     'english': 'Anglais',
     'french': 'Français',
     'arabic': 'Arabe',
+    // Speech recognition
+    'listening': 'Écoute en cours... Parlez maintenant',
+    'speech_not_supported': 'La reconnaissance vocale n\'est pas prise en charge par votre navigateur',
+    'speech_error': 'Erreur lors de la reconnaissance vocale. Veuillez réessayer',
   },
   ar: {
     // Navbar
@@ -117,7 +133,8 @@ const translations: Record<Language, Record<string, string>> = {
     'mission': 'مهمتنا',
     'approach': 'نهجنا',
     'team': 'فريقنا',
-    'activities': 'أنشطة تعلم اللغة العربية',
+    // Activities page
+    'activitiesPage': 'أنشطة تعلم اللغة العربية',
     'activitiesSubtitle': 'عزز مهاراتك في اللغة العربية من خلال أنشطتنا التفاعلية',
     'vocabulary': 'تمارين المفردات',
     'vocabularyDesc': 'أتقن المفردات العربية الأساسية من خلال التمارين التفاعلية',
@@ -126,13 +143,15 @@ const translations: Record<Language, Record<string, string>> = {
     'reading': 'فهم المقروء',
     'readingDesc': 'حسن مهارات القراءة لديك مع نصوص عربية قصيرة',
     'startActivity': 'ابدأ النشاط',
-    'levelTest': 'اختبار مستوى اللغة العربية',
+    // Level test
+    'levelTestPage': 'اختبار مستوى اللغة العربية',
     'levelTestSubtitle': 'اكتشف مستوى إتقانك الحالي للغة العربية من خلال تقييمنا الشامل',
     'aboutTest': 'عن الاختبار',
     'testDesc': 'سيقيم اختبار مستوى اللغة العربية لدينا مهاراتك في القراءة والكتابة والمفردات والقواعد. يستغرق الاختبار حوالي 20-30 دقيقة لإكماله.',
     'whatToExpect': 'ماذا تتوقع:',
     'startAssessment': 'بدء التقييم',
     'resultsImmediate': 'ستتلقى نتائجك فور الانتهاء',
+    // Not found
     'notFound': 'الصفحة غير موجودة',
     'notFoundDesc': 'الصفحة التي تبحث عنها غير موجودة أو تم نقلها.',
     'backToHome': 'العودة للصفحة الرئيسية',
@@ -142,13 +161,26 @@ const translations: Record<Language, Record<string, string>> = {
     'example': 'مثال',
     'synonyms': 'المرادفات',
     'antonyms': 'الأضداد',
+    'search': 'بحث',
     // Language
     'language': 'اللغة',
     'english': 'الإنجليزية',
     'french': 'الفرنسية',
     'arabic': 'العربية',
+    // Speech recognition
+    'listening': 'جاري الاستماع... تحدث الآن',
+    'speech_not_supported': 'خاصية التعرف على الصوت غير مدعومة في متصفحك',
+    'speech_error': 'حدث خطأ أثناء التعرف على الصوت. يرجى المحاولة مرة أخرى',
   }
 };
+
+// Add global type definitions for Web Speech API
+declare global {
+  interface Window {
+    SpeechRecognition: typeof SpeechRecognition;
+    webkitSpeechRecognition: typeof SpeechRecognition;
+  }
+}
 
 // Provider component
 export const LanguageProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
