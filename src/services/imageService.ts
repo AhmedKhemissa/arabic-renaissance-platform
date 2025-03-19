@@ -19,9 +19,8 @@ export const fetchWordImage = async (word: string): Promise<string | null> => {
     // In a real implementation, this would be a call to your backend service
     // that connects with the image generation API
     
-    // For now, we'll use a placeholder image service
-    // This is just for demonstration - in a real app, replace with your actual API
-    const imageUrl = `https://source.unsplash.com/100x100/?${encodeURIComponent(word)}`;
+    // Using 256x256 square image as requested
+    const imageUrl = `https://source.unsplash.com/256x256/?${encodeURIComponent(word)}`;
     
     // In a real implementation, we would verify the image is valid
     // For example by loading it in an image object

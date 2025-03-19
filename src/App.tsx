@@ -11,6 +11,7 @@ import Activities from "./pages/Activities";
 import LevelTest from "./pages/LevelTest";
 import About from "./pages/About";
 import NotFound from "./pages/NotFound";
+import DarkModeToggle from "./components/DarkModeToggle";
 
 const queryClient = new QueryClient();
 
@@ -20,6 +21,7 @@ const App = () => (
       <LanguageProvider>
         <Toaster />
         <Sonner />
+        <DarkModeToggle />
         <BrowserRouter>
           <Routes>
             <Route path="/" element={<Index />} />
